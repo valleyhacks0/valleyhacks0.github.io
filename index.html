@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>valleyhacks - Bay Area Hackathon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --cream: #f5f3e7;
+            --beige: #c9b896;
+            --sage: #a2b88f;
+            --sage-bright: #bcd4a6;
+            --forest: #6b8268;
+            --dark-forest: #1a1f1a;
+            --darker-forest: #0f120f;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: var(--darker-forest);
+            color: var(--cream);
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 18, 15, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(188, 212, 166, 0.3);
+            padding: 1.2rem 3rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--cream);
+            letter-spacing: -0.02em;
+        }
+
+        .nav-logo span {
+            color: var(--sage);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--beige);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--sage-bright);
+        }
+
+        .nav-cta {
+            padding: 0.7rem 1.5rem;
+            background: var(--sage-bright);
+            color: var(--darker-forest);
+            border: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(188, 212, 166, 0.3);
+        }
+
+        .nav-cta:hover {
+            background: var(--cream);
+            color: var(--darker-forest);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 25px rgba(188, 212, 166, 0.5);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+            margin-top: 80px;
+            background: linear-gradient(180deg, var(--dark-forest) 0%, var(--darker-forest) 100%);
+        }
+
+        .grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(188, 212, 166, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(188, 212, 166, 0.08) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.25;
+            pointer-events: none;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: var(--sage-bright);
+            top: -200px;
+            right: -200px;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: var(--forest);
+            bottom: -100px;
+            left: -100px;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-title {
+            font-size: 6rem;
+            font-weight: 700;
+            color: var(--cream);
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+            line-height: 1;
+            text-shadow: 0 0 60px rgba(188, 212, 166, 0.5);
+        }
+
+        .hero-title .highlight {
+            color: var(--sage-bright);
+            text-shadow: 0 0 40px rgba(188, 212, 166, 0.6);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--beige);
+            margin-bottom: 1rem;
+        }
+
+        .hero-date {
+            font-size: 1.1rem;
+            color: var(--sage-bright);
+            margin-bottom: 3rem;
+            text-shadow: 0 0 20px rgba(188, 212, 166, 0.3);
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 700;
+        }
+
+        .btn-primary {
+            background: var(--sage-bright);
+            color: var(--darker-forest);
+            box-shadow: 0 0 30px rgba(188, 212, 166, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: var(--cream);
+            color: var(--darker-forest);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(188, 212, 166, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--sage-bright);
+            border: 2px solid var(--sage-bright);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(188, 212, 166, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(188, 212, 166, 0.3);
+        }
+
+        /* Sections */
+        section {
+            padding: 8rem 2rem;
+            position: relative;
+        }
+
+        .section-label {
+            text-align: center;
+            color: var(--sage-bright);
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--cream);
+            margin-bottom: 4rem;
+        }
+
+        .content-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: rgba(245, 243, 231, 0.03);
+            border: 1px solid rgba(188, 212, 166, 0.25);
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--sage-bright), var(--cream));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--sage-bright);
+            transform: translateY(-10px);
+            background: rgba(245, 243, 231, 0.08);
+            box-shadow: 0 15px 50px rgba(188, 212, 166, 0.25);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: var(--cream);
+            margin-bottom: 1rem;
+        }
+
+        .card-description {
+            color: var(--beige);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(180deg, rgba(188, 212, 166, 0.08) 0%, transparent 100%);
+        }
+
+        .stats-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--sage-bright);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 40px rgba(188, 212, 166, 0.5);
+        }
+
+        .stat-label {
+            color: var(--beige);
+            font-size: 1rem;
+        }
+
+        /* Timeline */
+        .timeline {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-time {
+            min-width: 150px;
+            color: var(--sage-bright);
+            font-size: 1rem;
+            padding-top: 0.3rem;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-bottom: 2rem;
+            border-left: 2px solid rgba(188, 212, 166, 0.4);
+            padding-left: 2rem;
+            position: relative;
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 8px;
+            width: 10px;
+            height: 10px;
+            background: var(--sage-bright);
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(188, 212, 166, 0.7);
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            color: var(--cream);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-desc {
+            color: var(--beige);
+            line-height: 1.6;
+        }
+
+        /* Prize cards */
+        .prize-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .prize-card {
+            background: rgba(162, 184, 143, 0.08);
+            border: 2px solid rgba(162, 184, 143, 0.3);
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .prize-card:hover {
+            border-color: var(--sage);
+            transform: translateY(-10px);
+            background: rgba(162, 184, 143, 0.12);
+            box-shadow: 0 10px 40px rgba(162, 184, 143, 0.2);
+        }
+
+        .prize-place {
+            font-size: 1rem;
+            color: var(--beige);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .prize-amount {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--sage);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(162, 184, 143, 0.3);
+        }
+
+        .prize-details {
+            color: var(--beige);
+            font-size: 0.9rem;
+        }
+
+        /* FAQ */
+        .faq-item {
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            background: rgba(245, 243, 231, 0.03);
+            border: 1px solid rgba(188, 212, 166, 0.25);
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: var(--sage-bright);
+            background: rgba(245, 243, 231, 0.06);
+            box-shadow: 0 5px 25px rgba(188, 212, 166, 0.15);
+        }
+
+        .faq-question {
+            font-size: 1.2rem;
+            color: var(--cream);
+            margin-bottom: 1rem;
+        }
+
+        .faq-answer {
+            color: var(--beige);
+            line-height: 1.7;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.5);
+            border-top: 1px solid rgba(188, 212, 166, 0.25);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--sage-bright);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--cream);
+        }
+
+        .footer-text {
+            color: var(--beige);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-links {
+                gap: 1rem;
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                margin-top: 1rem;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .timeline-item {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .timeline-time {
+                min-width: auto;
+            }
+
+            .content-grid, .prize-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-logo">valley<span>hacks</span></div>
+        <ul class="nav-links">
+            <li><a href="#about">about</a></li>
+            <li><a href="#schedule">schedule</a></li>
+            <li><a href="#prizes">prizes</a></li>
+            <li><a href="#faq">faq</a></li>
+        </ul>
+        <button class="nav-cta">register</button>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="grid-bg"></div>
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">valley<span class="highlight">hacks</span></h1>
+            <p class="hero-subtitle">7 hours of building, learning, and innovation</p>
+            <p class="hero-date"> jan 11, 2026 | newark, ca</p>
+            <div class="cta-group">
+                <a href="#" class="btn btn-primary">register now</a>
+                <a href="#about" class="btn btn-secondary">learn more</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+        <div class="section-label">what we're about</div>
+        <h2 class="section-title">build. learn. connect.</h2>
+        <div class="content-grid">
+            <div class="card">
+                <div class="card-icon">⚡</div>
+                <h3 class="card-title">build anything</h3>
+                <p class="card-description">
+                    36 hours to bring your wildest ideas to life. Web apps, mobile apps, hardware, AI—if you can dream it, you can build it. Teams of 1-4.
+                </p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🎓</div>
+                <h3 class="card-title">learn from pros</h3>
+                <p class="card-description">
+                    Workshops from engineers at top tech companies. Master new frameworks, APIs, and tools through hands-on sessions.
+                </p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🤝</div>
+                <h3 class="card-title">meet builders</h3>
+                <p class="card-description">
+                    Network with 300+ hackers, founders, and engineers from across the Bay. Find co-founders and join a community of creators.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats-section">
+        <div class="section-label">by the numbers</div>
+        <h2 class="section-title">valleyhacks 2025</h2>
+        <div class="stats-grid">
+            <div>
+                <div class="stat-number">$100</div>
+                <div class="stat-label">in prizes</div>
+            </div>
+            <div>
+                <div class="stat-number">300+</div>
+                <div class="stat-label">hackers</div>
+            </div>
+            <div>
+                <div class="stat-number">36</div>
+                <div class="stat-label">hours</div>
+            </div>
+            <div>
+                <div class="stat-number">15+</div>
+                <div class="stat-label">workshops</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule -->
+    <section id="schedule">
+        <div class="section-label">timeline</div>
+        <h2 class="section-title">event schedule</h2>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-time">sat 9:00 am</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">check-in & breakfast</div>
+                    <div class="timeline-desc">Registration opens. Grab breakfast and meet your fellow hackers.</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">sat 10:00 am</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">opening ceremony</div>
+                    <div class="timeline-desc">Kickoff, rules, sponsor intros. Then hacking begins!</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">sat 12:00 pm</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">lunch & workshops</div>
+                    <div class="timeline-desc">Fuel up and learn. First workshop sessions start.</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">sat 6:00 pm</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">dinner</div>
+                    <div class="timeline-desc">Take a break, eat, and keep building.</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">sat 11:59 pm</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">midnight snacks</div>
+                    <div class="timeline-desc">Late night fuel to keep you going.</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">sun 10:00 am</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">submissions due</div>
+                    <div class="timeline-desc">Hacking ends. Submit your projects and prepare demos.</div>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-time">sun 2:00 pm</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">demos & awards</div>
+                    <div class="timeline-desc">Show off your projects. Winners announced at closing ceremony!</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Prizes -->
+    <section id="prizes">
+        <div class="section-label">rewards</div>
+        <h2 class="section-title">prizes</h2>
+        <div class="prize-grid">
+            <div class="prize-card">
+                <div class="prize-place">1st place</div>
+                <div class="prize-amount">$10,000</div>
+                <div class="prize-details">+ swag + mentorship</div>
+            </div>
+            <div class="prize-card">
+                <div class="prize-place">2nd place</div>
+                <div class="prize-amount">$5,000</div>
+                <div class="prize-details">+ swag + mentorship</div>
+            </div>
+            <div class="prize-card">
+                <div class="prize-place">3rd place</div>
+                <div class="prize-amount">$2,500</div>
+                <div class="prize-details">+ swag + mentorship</div>
+            </div>
+            <div class="prize-card">
+                <div class="prize-place">track prizes</div>
+                <div class="prize-amount">$7,500</div>
+                <div class="prize-details">multiple category winners</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <div class="section-label">questions</div>
+        <h2 class="section-title">faq</h2>
+        
+        <div class="faq-item">
+            <div class="faq-question">who can attend?</div>
+            <div class="faq-answer">
+                Any student (high school or college) or recent grad within 2 years. All skill levels welcome—never coded before? Perfect, we'll help you learn!
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">how much does it cost?</div>
+            <div class="faq-answer">
+                Nothing! Completely free. We provide meals, swag, workshops, and prizes. Just bring your laptop, charger, and creativity.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">what about teams?</div>
+            <div class="faq-answer">
+                Teams of 1-4 people. Come solo and find teammates at the event, or bring your own crew. We'll have team formation activities.
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">what should I bring?</div>
+            <div class="faq-answer">
+                Laptop, chargers, student ID, and anything else you need to build your project. We'll provide the rest!
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="#">twitter</a>
+            <a href="#">instagram</a>
+            <a href="#">discord</a>
+            <a href="#">email</a>
+        </div>
+        <p class="footer-text">© 2025 valleyhacks. built with passion in the bay area.</p>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Navbar hide on scroll
+        let lastScroll = 0;
+        const navbar = document.querySelector('.navbar');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll <= 0) {
+                navbar.style.transform = 'translateY(0)';
+                return;
+            }
+            
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                navbar.style.transform = 'translateY(-100%)';
+            } else {
+                navbar.style.transform = 'translateY(0)';
+            }
+            
+            lastScroll = currentScroll;
+        });
+
+        // Parallax effect on orbs
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const orbs = document.querySelectorAll('.gradient-orb');
+            orbs.forEach((orb, index) => {
+                const speed = (index + 1) * 0.3;
+                orb.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
