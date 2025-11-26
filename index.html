@@ -29,7 +29,7 @@
         }
 
         .lenis.lenis-smooth {
-            scroll-behavior: auto !important; /* Forces Lenis to take over */
+            scroll-behavior: auto !important;
         }
 
         .lenis.lenis-smooth [data-lenis-prevent] {
@@ -45,7 +45,6 @@
             background: var(--darker-forest);
             color: var(--cream);
             overflow-x: hidden;
-            /* scroll-behavior is handled by Lenis now */
         }
 
         /* Navigation Bar */
@@ -53,15 +52,16 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(15, 18, 15, 0.8); /* Made slightly more transparent */
-            backdrop-filter: blur(15px); /* Increased blur */
+            background: rgba(15, 18, 15, 0.85); /* Slightly higher opacity for mobile read */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px); /* iOS support */
             border-bottom: 1px solid rgba(188, 212, 166, 0.1);
             padding: 1.2rem 3rem;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Smoother nav hide */
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
@@ -121,9 +121,28 @@
             justify-content: center;
             position: relative;
             padding: 2rem;
-            margin-top: 0; /* Reset margin */
+            margin-top: 0;
             padding-top: 100px;
+            /* Gradient background moved to body to prevent stacking context issues */
+            background: transparent; 
+            z-index: 1;
+        }
+
+        /* FIXED BACKGROUND ELEMENTS - Eliminates flicker */
+        .fixed-bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1; /* Behind everything */
             background: linear-gradient(180deg, var(--dark-forest) 0%, var(--darker-forest) 100%);
+            overflow: hidden;
+            /* GPU Acceleration hacks */
+            transform: translate3d(0,0,0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            pointer-events: none;
         }
 
         .grid-bg {
@@ -139,6 +158,8 @@
             opacity: 0.6;
             pointer-events: none;
             will-change: transform;
+            /* Fix for jitter */
+            transform: translateZ(0); 
         }
 
         .gradient-orb {
@@ -147,23 +168,26 @@
             filter: blur(120px);
             opacity: 0.25;
             pointer-events: none;
-            will-change: transform; /* Performance optimization */
+            will-change: transform;
+            /* Fix for flicker - forces GPU rendering */
+            transform: translate3d(0,0,0);
+            backface-visibility: hidden;
         }
 
         .orb-1 {
             width: 600px;
             height: 600px;
             background: var(--sage-bright);
-            top: -200px;
-            right: -200px;
+            top: -10%;
+            right: -10%;
         }
 
         .orb-2 {
             width: 500px;
             height: 500px;
             background: var(--forest);
-            bottom: -100px;
-            left: -100px;
+            bottom: -10%;
+            left: -10%;
         }
 
         .hero-content {
@@ -261,6 +285,7 @@
         section {
             padding: 8rem 2rem;
             position: relative;
+            z-index: 1; /* Ensures content sits above fixed background */
         }
 
         .section-label {
@@ -295,6 +320,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            backdrop-filter: blur(5px); /* Adds depth */
         }
 
         .card::before {
@@ -430,6 +456,7 @@
             padding: 3rem 2rem;
             text-align: center;
             transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
         }
 
         .prize-card:hover {
@@ -468,6 +495,7 @@
             border: 1px solid rgba(188, 212, 166, 0.25);
             padding: 2rem;
             transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
         }
 
         .faq-item:hover {
@@ -489,10 +517,12 @@
 
         /* Footer */
         footer {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.8);
             border-top: 1px solid rgba(188, 212, 166, 0.25);
             padding: 4rem 2rem;
             text-align: center;
+            position: relative;
+            z-index: 2;
         }
 
         .footer-links {
@@ -639,6 +669,12 @@
     </style>
 </head>
 <body>
+    <div class="fixed-bg-container">
+        <div class="grid-bg"></div>
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+    </div>
+
     <nav class="navbar">
         <div class="nav-logo">valley<span>hacks</span></div>
         <ul class="nav-links">
@@ -651,10 +687,6 @@
     </nav>
 
     <section class="hero">
-        <div class="grid-bg"></div>
-        <div class="gradient-orb orb-1"></div>
-        <div class="gradient-orb orb-2"></div>
-        
         <div class="hero-content reveal">
             <h1 class="hero-title">valley<span class="highlight">hacks</span></h1>
             <p class="hero-subtitle">7 hours of building, learning, and innovation</p>
@@ -829,6 +861,12 @@
     </footer>
 
     <script>
+        // 0. Force Scroll to Top on Refresh
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual'; // Prevents browser from remembering scroll position
+        }
+        window.scrollTo(0, 0); // fallback
+
         // 1. Initialize Lenis (Smooth Scroll)
         const lenis = new Lenis({
             duration: 1.2,
@@ -840,6 +878,9 @@
             smoothTouch: false,
             touchMultiplier: 2,
         });
+
+        // Force Lenis to start at top immediately
+        lenis.scrollTo(0, { immediate: true });
 
         function raf(time) {
             lenis.raf(time);
@@ -860,7 +901,6 @@
         let lastScroll = 0;
         const navbar = document.querySelector('.navbar');
 
-        // We use lenis.on('scroll') instead of window.onscroll for better sync
         lenis.on('scroll', ({ scroll }) => {
             const currentScroll = scroll;
             
@@ -878,21 +918,22 @@
             lastScroll = currentScroll;
         });
 
-        // 4. Parallax effect optimized with RequestAnimationFrame
-        // (Synced with Lenis scroll position)
+        // 4. Parallax effect optimized for mobile
+        // Uses translate3d for GPU acceleration
         const orbs = document.querySelectorAll('.gradient-orb');
         
         lenis.on('scroll', ({ scroll }) => {
             orbs.forEach((orb, index) => {
-                const speed = (index + 1) * 0.5; // Increased speed slightly
-                orb.style.transform = `translateY(${scroll * speed}px)`;
+                const speed = (index + 1) * 0.4; // Slightly reduced speed for smoother feel
+                // translate3d is crucial for mobile performance
+                orb.style.transform = `translate3d(0, ${scroll * speed}px, 0)`;
             });
         });
 
-        // 5. Scroll Reveal Animation (Intersection Observer)
+        // 5. Scroll Reveal Animation
         const observerOptions = {
             threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px" // Trigger slightly before element enters view
+            rootMargin: "0px 0px -50px 0px"
         };
 
         const observer = new IntersectionObserver((entries) => {
