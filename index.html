@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>valleyhacks - Bay Area Hackathon</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script> 
+    
     <style>
         * {
             margin: 0;
@@ -22,12 +24,28 @@
             --darker-forest: #0f120f;
         }
 
+        html.lenis, html.lenis body {
+            height: auto;
+        }
+
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important; /* Forces Lenis to take over */
+        }
+
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
+
         body {
             font-family: 'Space Mono', monospace;
             background: var(--darker-forest);
             color: var(--cream);
             overflow-x: hidden;
-            scroll-behavior: smooth;
+            /* scroll-behavior is handled by Lenis now */
         }
 
         /* Navigation Bar */
@@ -35,15 +53,15 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(15, 18, 15, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(188, 212, 166, 0.3);
+            background: rgba(15, 18, 15, 0.8); /* Made slightly more transparent */
+            backdrop-filter: blur(15px); /* Increased blur */
+            border-bottom: 1px solid rgba(188, 212, 166, 0.1);
             padding: 1.2rem 3rem;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Smoother nav hide */
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
         }
 
@@ -103,7 +121,8 @@
             justify-content: center;
             position: relative;
             padding: 2rem;
-            margin-top: 80px;
+            margin-top: 0; /* Reset margin */
+            padding-top: 100px;
             background: linear-gradient(180deg, var(--dark-forest) 0%, var(--darker-forest) 100%);
         }
 
@@ -119,6 +138,7 @@
             background-size: 50px 50px;
             opacity: 0.6;
             pointer-events: none;
+            will-change: transform;
         }
 
         .gradient-orb {
@@ -127,6 +147,7 @@
             filter: blur(120px);
             opacity: 0.25;
             pointer-events: none;
+            will-change: transform; /* Performance optimization */
         }
 
         .orb-1 {
@@ -222,6 +243,18 @@
             background: rgba(188, 212, 166, 0.15);
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(188, 212, 166, 0.3);
+        }
+
+        /* 2. SCROLL REVEAL ANIMATIONS */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* Sections */
@@ -606,7 +639,6 @@
     </style>
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-logo">valley<span>hacks</span></div>
         <ul class="nav-links">
@@ -618,13 +650,12 @@
         <button class="nav-cta">register</button>
     </nav>
 
-    <!-- Hero -->
     <section class="hero">
         <div class="grid-bg"></div>
         <div class="gradient-orb orb-1"></div>
         <div class="gradient-orb orb-2"></div>
         
-        <div class="hero-content">
+        <div class="hero-content reveal">
             <h1 class="hero-title">valley<span class="highlight">hacks</span></h1>
             <p class="hero-subtitle">7 hours of building, learning, and innovation</p>
             <p class="hero-date">jan 10, 2026 | newark, ca</p>
@@ -635,26 +666,27 @@
         </div>
     </section>
 
-    <!-- About -->
     <section id="about">
-        <div class="section-label">what we're about</div>
-        <h2 class="section-title">build. learn. connect.</h2>
+        <div class="reveal">
+            <div class="section-label">what we're about</div>
+            <h2 class="section-title">build. learn. connect.</h2>
+        </div>
         <div class="content-grid">
-            <div class="card">
+            <div class="card reveal">
                 <div class="card-icon">⚡</div>
                 <h3 class="card-title">build anything</h3>
                 <p class="card-description">
                     7 hours to bring your ideas to life. Web apps, mobile apps, hardware, AI—if you can dream it, you can build it. Teams of 1-4.
                 </p>
             </div>
-            <div class="card">
+            <div class="card reveal">
                 <div class="card-icon">🎓</div>
                 <h3 class="card-title">learn from pros</h3>
                 <p class="card-description">
                     Workshops from engineers at top tech companies. Master new frameworks, APIs, and tools through hands-on sessions.
                 </p>
             </div>
-            <div class="card">
+            <div class="card reveal">
                 <div class="card-icon">🤝</div>
                 <h3 class="card-title">meet builders</h3>
                 <p class="card-description">
@@ -664,78 +696,55 @@
         </div>
     </section>
 
-    <!-- Stats -->
-    <!-- <section class="stats-section"> -->
-    <!--     <div class="section-label">by the numbers</div> -->
-    <!--     <h2 class="section-title">valleyhacks 2025</h2> -->
-    <!--     <div class="stats-grid"> -->
-    <!--         <div> -->
-    <!--             <div class="stat-number">$25k</div> -->
-    <!--             <div class="stat-label">in prizes</div> -->
-    <!--         </div> -->
-    <!--         <div> -->
-    <!--             <div class="stat-number">300+</div> -->
-    <!--             <div class="stat-label">hackers</div> -->
-    <!--         </div> -->
-    <!--         <div> -->
-    <!--             <div class="stat-number">36</div> -->
-    <!--             <div class="stat-label">hours</div> -->
-    <!--         </div> -->
-    <!--         <div> -->
-    <!--             <div class="stat-number">15+</div> -->
-    <!--             <div class="stat-label">workshops</div> -->
-    <!--         </div> -->
-    <!--     </div> -->
-    <!-- </section> -->
-
-    <!-- Schedule -->
     <section id="schedule">
-        <div class="section-label">timeline</div>
-        <h2 class="section-title">event schedule</h2>
+        <div class="reveal">
+            <div class="section-label">timeline</div>
+            <h2 class="section-title">event schedule</h2>
+        </div>
         <div class="timeline">
-            <div class="timeline-item">
+            <div class="timeline-item reveal">
                 <div class="timeline-time">10:00 am</div>
                 <div class="timeline-content">
                     <div class="timeline-title">check-in & breakfast</div>
                     <div class="timeline-desc">Registration opens. Grab breakfast and meet your fellow hackers.</div>
                 </div>
             </div>
-            <div class="timeline-item">
+            <div class="timeline-item reveal">
                 <div class="timeline-time">10:30 am</div>
                 <div class="timeline-content">
                     <div class="timeline-title">opening ceremony</div>
                     <div class="timeline-desc">Kickoff, rules, sponsor intros. Then hacking begins!</div>
                 </div>
             </div>
-            <div class="timeline-item">
+            <div class="timeline-item reveal">
                 <div class="timeline-time">11:00 am</div>
                 <div class="timeline-content">
                     <div class="timeline-title">hacking starts</div>
                     <div class="timeline-desc">Start building! Workshops and mentors available throughout.</div>
                 </div>
             </div>
-            <div class="timeline-item">
+            <div class="timeline-item reveal">
                 <div class="timeline-time">12:30 pm</div>
                 <div class="timeline-content">
                     <div class="timeline-title">lunch</div>
                     <div class="timeline-desc">Fuel up and keep building.</div>
                 </div>
             </div>
-            <div class="timeline-item">
+            <div class="timeline-item reveal">
                 <div class="timeline-time">2:00 pm</div>
                 <div class="timeline-content">
                     <div class="timeline-title">workshop sessions</div>
                     <div class="timeline-desc">Technical workshops on various topics.</div>
                 </div>
             </div>
-            <div class="timeline-item">
+            <div class="timeline-item reveal">
                 <div class="timeline-time">4:00 pm</div>
                 <div class="timeline-content">
                     <div class="timeline-title">submissions due</div>
                     <div class="timeline-desc">Hacking ends. Submit your projects and prepare demos.</div>
                 </div>
             </div>
-            <div class="timeline-item">
+            <div class="timeline-item reveal">
                 <div class="timeline-time">4:30 pm</div>
                 <div class="timeline-content">
                     <div class="timeline-title">demos & awards</div>
@@ -745,27 +754,28 @@
         </div>
     </section>
 
-    <!-- Prizes -->
     <section id="prizes">
-        <div class="section-label">rewards</div>
-        <h2 class="section-title">prizes</h2>
+        <div class="reveal">
+            <div class="section-label">rewards</div>
+            <h2 class="section-title">prizes</h2>
+        </div>
         <div class="prize-grid">
-            <div class="prize-card">
+            <div class="prize-card reveal">
                 <div class="prize-place">1st place</div>
                 <div class="prize-amount">$____</div>
                 <div class="prize-details">+ swag + mentorship</div>
             </div>
-            <div class="prize-card">
+            <div class="prize-card reveal">
                 <div class="prize-place">2nd place</div>
                 <div class="prize-amount">$____</div>
                 <div class="prize-details">+ swag + mentorship</div>
             </div>
-            <div class="prize-card">
+            <div class="prize-card reveal">
                 <div class="prize-place">3rd place</div>
                 <div class="prize-amount">$____</div>
                 <div class="prize-details">+ swag + mentorship</div>
             </div>
-            <div class="prize-card">
+            <div class="prize-card reveal">
                 <div class="prize-place">track prizes</div>
                 <div class="prize-amount">$____</div>
                 <div class="prize-details">multiple category winners</div>
@@ -773,33 +783,34 @@
         </div>
     </section>
 
-    <!-- FAQ -->
     <section id="faq">
-        <div class="section-label">questions</div>
-        <h2 class="section-title">faq</h2>
+        <div class="reveal">
+            <div class="section-label">questions</div>
+            <h2 class="section-title">faq</h2>
+        </div>
         
-        <div class="faq-item">
+        <div class="faq-item reveal">
             <div class="faq-question">who can attend?</div>
             <div class="faq-answer">
                 Any student (high school or college) or recent grad within 2 years. All skill levels welcome—never coded before? Perfect, we'll help you learn!
             </div>
         </div>
 
-        <div class="faq-item">
+        <div class="faq-item reveal">
             <div class="faq-question">how much does it cost?</div>
             <div class="faq-answer">
                 Nothing! Completely free. We provide meals, swag, workshops, and prizes. Just bring your laptop, charger, and creativity.
             </div>
         </div>
 
-        <div class="faq-item">
+        <div class="faq-item reveal">
             <div class="faq-question">what about teams?</div>
             <div class="faq-answer">
                 Teams of 1-4 people. Come solo and find teammates at the event, or bring your own crew. We'll have team formation activities.
             </div>
         </div>
 
-        <div class="faq-item">
+        <div class="faq-item reveal">
             <div class="faq-question">what should I bring?</div>
             <div class="faq-answer">
                 Laptop, chargers, and anything else you need to build your project. We'll provide the rest!
@@ -807,7 +818,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-links">
             <a href="#">twitter</a>
@@ -819,23 +829,40 @@
     </footer>
 
     <script>
-        // Smooth scroll
+        // 1. Initialize Lenis (Smooth Scroll)
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+
+        // 2. Anchor Links for Lenis
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
+                lenis.scrollTo(this.getAttribute('href'));
             });
         });
 
-        // Navbar hide on scroll
+        // 3. Navbar hide on scroll
         let lastScroll = 0;
         const navbar = document.querySelector('.navbar');
 
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
+        // We use lenis.on('scroll') instead of window.onscroll for better sync
+        lenis.on('scroll', ({ scroll }) => {
+            const currentScroll = scroll;
             
             if (currentScroll <= 0) {
                 navbar.style.transform = 'translateY(0)';
@@ -851,14 +878,33 @@
             lastScroll = currentScroll;
         });
 
-        // Parallax effect on orbs
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const orbs = document.querySelectorAll('.gradient-orb');
+        // 4. Parallax effect optimized with RequestAnimationFrame
+        // (Synced with Lenis scroll position)
+        const orbs = document.querySelectorAll('.gradient-orb');
+        
+        lenis.on('scroll', ({ scroll }) => {
             orbs.forEach((orb, index) => {
-                const speed = (index + 1) * 0.3;
-                orb.style.transform = `translateY(${scrolled * speed}px)`;
+                const speed = (index + 1) * 0.5; // Increased speed slightly
+                orb.style.transform = `translateY(${scroll * speed}px)`;
             });
+        });
+
+        // 5. Scroll Reveal Animation (Intersection Observer)
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px" // Trigger slightly before element enters view
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
         });
     </script>
 </body>
