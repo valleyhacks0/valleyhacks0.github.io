@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>valleyhacks - Bay Area Hackathon</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script> 
-    
+    <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -24,7 +25,8 @@
             --darker-forest: #0f120f;
         }
 
-        html.lenis, html.lenis body {
+        html.lenis,
+        html.lenis body {
             height: auto;
         }
 
@@ -52,9 +54,9 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(15, 18, 15, 0.85); /* Slightly higher opacity for mobile read */
+            background: rgba(15, 18, 15, 0.95);
             backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px); /* iOS support */
+            -webkit-backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(188, 212, 166, 0.1);
             padding: 1.2rem 3rem;
             z-index: 1000;
@@ -123,23 +125,21 @@
             padding: 2rem;
             margin-top: 0;
             padding-top: 100px;
-            /* Gradient background moved to body to prevent stacking context issues */
-            background: transparent; 
+            background: transparent;
             z-index: 1;
         }
 
-        /* FIXED BACKGROUND ELEMENTS - Eliminates flicker */
+        /* FIXED BACKGROUND ELEMENTS */
         .fixed-bg-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: -1; /* Behind everything */
+            z-index: -1;
             background: linear-gradient(180deg, var(--dark-forest) 0%, var(--darker-forest) 100%);
             overflow: hidden;
-            /* GPU Acceleration hacks */
-            transform: translate3d(0,0,0);
+            transform: translate3d(0, 0, 0);
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
             pointer-events: none;
@@ -151,15 +151,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
+            background-image:
                 linear-gradient(rgba(188, 212, 166, 0.08) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(188, 212, 166, 0.08) 1px, transparent 1px);
             background-size: 50px 50px;
             opacity: 0.6;
             pointer-events: none;
             will-change: transform;
-            /* Fix for jitter */
-            transform: translateZ(0); 
+            transform: translateZ(0);
         }
 
         .gradient-orb {
@@ -169,8 +168,7 @@
             opacity: 0.25;
             pointer-events: none;
             will-change: transform;
-            /* Fix for flicker - forces GPU rendering */
-            transform: translate3d(0,0,0);
+            transform: translate3d(0, 0, 0);
             backface-visibility: hidden;
         }
 
@@ -269,7 +267,7 @@
             box-shadow: 0 10px 30px rgba(188, 212, 166, 0.3);
         }
 
-        /* 2. SCROLL REVEAL ANIMATIONS */
+        /* SCROLL REVEAL ANIMATIONS */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -285,7 +283,7 @@
         section {
             padding: 8rem 2rem;
             position: relative;
-            z-index: 1; /* Ensures content sits above fixed background */
+            z-index: 1;
         }
 
         .section-label {
@@ -320,7 +318,7 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-            backdrop-filter: blur(5px); /* Adds depth */
+            backdrop-filter: blur(5px);
         }
 
         .card::before {
@@ -361,33 +359,6 @@
             color: var(--beige);
             line-height: 1.7;
             font-size: 0.95rem;
-        }
-
-        /* Stats Section */
-        .stats-section {
-            background: linear-gradient(180deg, rgba(188, 212, 166, 0.08) 0%, transparent 100%);
-        }
-
-        .stats-grid {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 4rem;
-            font-weight: 700;
-            color: var(--sage-bright);
-            margin-bottom: 0.5rem;
-            text-shadow: 0 0 40px rgba(188, 212, 166, 0.5);
-        }
-
-        .stat-label {
-            color: var(--beige);
-            font-size: 1rem;
         }
 
         /* Timeline */
@@ -487,6 +458,36 @@
             font-size: 0.9rem;
         }
 
+        /* SPONSORS SECTION */
+        .sponsor-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2.5rem;
+            align-items: center;
+            justify-items: center;
+        }
+
+        .sponsor-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* White background added for visibility of dark logos (Balsamiq, Hanson Bridgett, etc.) */
+            /* background: rgba(255, 255, 255, 0.9); */
+            border-radius: 8px;
+            padding: 1.5rem;
+            width: 100%;
+            height: 150px;
+            /* border: 1px solid rgba(188, 212, 166, 0.1); */
+        }
+
+        .sponsor-item img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
         /* FAQ */
         .faq-item {
             max-width: 800px;
@@ -551,6 +552,16 @@
 
         /* Mobile */
         @media (max-width: 768px) {
+            .orb-1, .orb-2 {
+                width: 250px;
+                height: 250px;
+                opacity: 0.15;
+                filter: blur(80px);
+            }
+
+            .orb-1 { top: -5%; right: -15%; }
+            .orb-2 { bottom: -5%; left: -15%; }
+
             .navbar {
                 padding: 1rem 1.5rem;
                 flex-direction: column;
@@ -563,111 +574,38 @@
                 justify-content: center;
             }
 
-            .nav-links a {
-                font-size: 0.85rem;
-            }
-
             .hero {
                 padding: 1rem;
                 margin-top: 120px;
             }
 
-            .hero-title {
-                font-size: 2.5rem;
-            }
+            .hero-title { font-size: 2.5rem; }
+            .hero-subtitle { font-size: 1rem; }
+            .section-title { font-size: 2rem; }
 
-            .hero-subtitle {
-                font-size: 1rem;
-            }
+            .timeline-item { flex-direction: column; gap: 0.5rem; }
+            .timeline-time { min-width: auto; font-size: 0.9rem; }
+            .timeline-content { padding-left: 1.5rem; }
 
-            .hero-date {
-                font-size: 0.9rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .section-label {
-                font-size: 0.8rem;
-            }
-
-            section {
-                padding: 4rem 1.5rem;
-            }
-
-            .timeline-item {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-
-            .timeline-time {
-                min-width: auto;
-                font-size: 0.9rem;
-            }
-
-            .timeline-content {
-                padding-left: 1.5rem;
-            }
-
-            .timeline-title {
-                font-size: 1.1rem;
-            }
-
-            .timeline-desc {
-                font-size: 0.9rem;
-            }
-
-            .content-grid, .prize-grid {
-                grid-template-columns: 1fr;
+            .content-grid, .prize-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            
+            /* Sponsor Grid Mobile */
+            .sponsor-grid {
+                grid-template-columns: repeat(2, 1fr);
                 gap: 1.5rem;
             }
-
-            .card {
-                padding: 2rem;
+            .sponsor-item {
+                padding: 1rem;
+                height: 80px;
             }
 
-            .card-title {
-                font-size: 1.3rem;
-            }
-
-            .card-description {
-                font-size: 0.9rem;
-            }
-
-            .stat-number {
-                font-size: 3rem;
-            }
-
-            .prize-amount {
-                font-size: 2.5rem;
-            }
-
-            .cta-group {
-                flex-direction: column;
-                width: 100%;
-                gap: 1rem;
-            }
-
-            .btn {
-                width: 100%;
-                padding: 1rem 2rem;
-            }
-
-            .faq-item {
-                padding: 1.5rem;
-            }
-
-            .faq-question {
-                font-size: 1rem;
-            }
-
-            .faq-answer {
-                font-size: 0.9rem;
-            }
+            .card { padding: 2rem; }
+            .cta-group { flex-direction: column; width: 100%; gap: 1rem; }
+            .btn { width: 100%; }
         }
     </style>
 </head>
+
 <body>
     <div class="fixed-bg-container">
         <div class="grid-bg"></div>
@@ -681,6 +619,7 @@
             <li><a href="#about">about</a></li>
             <li><a href="#schedule">schedule</a></li>
             <li><a href="#prizes">prizes</a></li>
+            <li><a href="#sponsors">sponsors</a></li>
             <li><a href="#faq">faq</a></li>
         </ul>
         <button class="nav-cta">register</button>
@@ -708,21 +647,24 @@
                 <div class="card-icon">⚡</div>
                 <h3 class="card-title">build anything</h3>
                 <p class="card-description">
-                    7 hours to bring your ideas to life. Web apps, mobile apps, hardware, AI—if you can dream it, you can build it. Teams of 1-4.
+                    7 hours to bring your ideas to life. Web apps, mobile apps, hardware, AI—if you can dream it, you
+                    can build it. Teams of 1-4.
                 </p>
             </div>
             <div class="card reveal">
                 <div class="card-icon">🎓</div>
                 <h3 class="card-title">learn from pros</h3>
                 <p class="card-description">
-                    Workshops from engineers at top tech companies. Master new frameworks, APIs, and tools through hands-on sessions.
+                    Workshops from engineers at top tech companies. Master new frameworks, APIs, and tools through
+                    hands-on sessions.
                 </p>
             </div>
             <div class="card reveal">
                 <div class="card-icon">🤝</div>
                 <h3 class="card-title">meet builders</h3>
                 <p class="card-description">
-                    Network with 300+ hackers, founders, and engineers from across the Bay. Find co-founders and join a community of creators.
+                    Network with 300+ hackers, founders, and engineers from across the Bay. Find co-founders and join a
+                    community of creators.
                 </p>
             </div>
         </div>
@@ -815,30 +757,78 @@
         </div>
     </section>
 
+    <section id="sponsors">
+        <div class="reveal">
+            <div class="section-label">our partners</div>
+            <h2 class="section-title">sponsors</h2>
+        </div>
+        <div class="sponsor-grid">
+            <a href="https://tpumps.com" target="_blank" class="sponsor-item reveal">
+                <img src="https://static.wixstatic.com/media/131e23_e604c808492a4ae5a9cc571a4f77cc68~mv2.png/v1/fill/w_628,h_198,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Tpumps%20Logo%20Purple.png" alt="Tpumps">
+            </a>
+            <a href="https://lovable.dev" target="_blank" class="sponsor-item reveal">
+                <img src="https://lovable.dev/img/logo/lovable-logo-bg-dark.png" alt="Lovable">
+            </a>
+            <a href="https://codecrafters.io" target="_blank" class="sponsor-item reveal">
+                <img src="https://codecrafters.io/images/logo.png" alt="CodeCrafters">
+            </a>
+            <a href="https://unibee.dev" target="_blank" class="sponsor-item reveal">
+                <img src="https://unibee.dev/wp-content/uploads/2025/02/1703055521790.jpg" alt="Unibee">
+            </a>
+            <a href="https://hansonbridgett.com" target="_blank" class="sponsor-item reveal">
+                <img src="https://www.hansonbridgett.com/sites/default/files/styles/twitter_card/public/2025-08/hanson-bridgett-1000x1000.png?itok=O7OQVzdO" alt="Hanson Bridgett">
+            </a>
+            <a href="https://nordvpn.com" target="_blank" class="sponsor-item reveal">
+                <img src="https://assets-prd.ignimgs.com/2022/11/17/wired-nordvpn-2-1668720064002.png" alt="NordVPN">
+            </a>
+            <a href="https://nordpass.com" target="_blank" class="sponsor-item reveal">
+                <img src="https://www.zdnet.com/a/img/resize/c1b1d83f97c80fa38fcc346339fd0f3b5e671ff7/2024/10/30/07400539-44ba-44c8-afba-dddacb4bd2b1/nordpass.png?auto=webp&fit=crop&height=1200&width=1200    " alt="NordPass">
+            </a>
+            <a href="https://nexos.ai" target="_blank" class="sponsor-item reveal">
+                <img src="https://lever-client-logos.s3.us-west-2.amazonaws.com/85f55f08-16c4-45eb-8455-e8978a378db4-1743516114537.png" onerror="this.src='https://avatars.githubusercontent.com/u/152646639?s=200&v=4'" alt="Nexos.ai">
+            </a>
+            <a href="https://saily.com" target="_blank" class="sponsor-item reveal">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/29/Saily.png" alt="Saily">
+            </a>
+            <a href="#" class="sponsor-item reveal">
+                <img src="https://nordprotect.com/og.png" alt="NordProtect">
+            </a>
+            <a href="https://incogni.com" target="_blank" class="sponsor-item reveal">
+                <img src="https://cyberinsider.com/wp-content/uploads/2025/07/Incogni-Review--1024x470.png" alt="Incogni">
+            </a>
+            <a href="https://balsamiq.com" target="_blank" class="sponsor-item reveal">
+                <img src="https://media.licdn.com/dms/image/v2/D560BAQF8lnwZrVhnnw/company-logo_200_200/B56ZVBhIw8HQAI-/0/1740560960970/balsamiq_logo?e=2147483647&v=beta&t=jwJR2zrHl6qK_wfsKBW1h_qudMQd0hXC5J_kZKrl7Ec" alt="Balsamiq">
+            </a>
+        </div>
+    </section>
+
     <section id="faq">
         <div class="reveal">
             <div class="section-label">questions</div>
             <h2 class="section-title">faq</h2>
         </div>
-        
+
         <div class="faq-item reveal">
             <div class="faq-question">who can attend?</div>
             <div class="faq-answer">
-                Any student (high school or college) or recent grad within 2 years. All skill levels welcome—never coded before? Perfect, we'll help you learn!
+                Any student (high school or college) or recent grad within 2 years. All skill levels welcome—never coded
+                before? Perfect, we'll help you learn!
             </div>
         </div>
 
         <div class="faq-item reveal">
             <div class="faq-question">how much does it cost?</div>
             <div class="faq-answer">
-                Nothing! Completely free. We provide meals, swag, workshops, and prizes. Just bring your laptop, charger, and creativity.
+                Nothing! Completely free. We provide meals, swag, workshops, and prizes. Just bring your laptop,
+                charger, and creativity.
             </div>
         </div>
 
         <div class="faq-item reveal">
             <div class="faq-question">what about teams?</div>
             <div class="faq-answer">
-                Teams of 1-4 people. Come solo and find teammates at the event, or bring your own crew. We'll have team formation activities.
+                Teams of 1-4 people. Come solo and find teammates at the event, or bring your own crew. We'll have team
+                formation activities.
             </div>
         </div>
 
@@ -863,11 +853,11 @@
     <script>
         // 0. Force Scroll to Top on Refresh
         if (history.scrollRestoration) {
-            history.scrollRestoration = 'manual'; // Prevents browser from remembering scroll position
+            history.scrollRestoration = 'manual';
         }
-        window.scrollTo(0, 0); // fallback
+        window.scrollTo(0, 0);
 
-        // 1. Initialize Lenis (Smooth Scroll)
+        // 1. Initialize Lenis
         const lenis = new Lenis({
             duration: 1.2,
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -879,7 +869,6 @@
             touchMultiplier: 2,
         });
 
-        // Force Lenis to start at top immediately
         lenis.scrollTo(0, { immediate: true });
 
         function raf(time) {
@@ -889,7 +878,7 @@
 
         requestAnimationFrame(raf);
 
-        // 2. Anchor Links for Lenis
+        // 2. Anchor Links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -897,40 +886,40 @@
             });
         });
 
-        // 3. Navbar hide on scroll
+        // 3. Navbar logic UPDATED
         let lastScroll = 0;
         const navbar = document.querySelector('.navbar');
 
         lenis.on('scroll', ({ scroll }) => {
             const currentScroll = scroll;
-            
-            if (currentScroll <= 0) {
+            const isMobile = window.innerWidth <= 768;
+
+            if (currentScroll <= 0 || isMobile) {
                 navbar.style.transform = 'translateY(0)';
+                lastScroll = currentScroll; 
                 return;
             }
-            
+
             if (currentScroll > lastScroll && currentScroll > 100) {
                 navbar.style.transform = 'translateY(-100%)';
             } else {
                 navbar.style.transform = 'translateY(0)';
             }
-            
+
             lastScroll = currentScroll;
         });
 
-        // 4. Parallax effect optimized for mobile
-        // Uses translate3d for GPU acceleration
+        // 4. Parallax effect
         const orbs = document.querySelectorAll('.gradient-orb');
-        
+
         lenis.on('scroll', ({ scroll }) => {
             orbs.forEach((orb, index) => {
-                const speed = (index + 1) * 0.4; // Slightly reduced speed for smoother feel
-                // translate3d is crucial for mobile performance
+                const speed = (index + 1) * 0.4;
                 orb.style.transform = `translate3d(0, ${scroll * speed}px, 0)`;
             });
         });
 
-        // 5. Scroll Reveal Animation
+        // 5. Scroll Reveal
         const observerOptions = {
             threshold: 0.1,
             rootMargin: "0px 0px -50px 0px"
@@ -949,4 +938,5 @@
         });
     </script>
 </body>
+
 </html>
