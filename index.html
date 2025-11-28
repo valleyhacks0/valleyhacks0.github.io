@@ -49,7 +49,7 @@
             overflow-x: hidden;
         }
 
-        /* Navigation Bar */
+        /* --- NAVIGATION BAR --- */
         .navbar {
             position: fixed;
             top: 0;
@@ -63,8 +63,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            /* Transition for height/padding changes if needed, but transform removed for stickiness */
+            transition: padding 0.3s ease;
         }
 
         .nav-logo {
@@ -72,10 +72,19 @@
             font-weight: 700;
             color: var(--cream);
             letter-spacing: -0.02em;
+            z-index: 1002; /* Above the mobile menu overlay */
+            position: relative;
         }
 
         .nav-logo span {
             color: var(--sage);
+        }
+
+        /* Container for Links + CTA */
+        .nav-content {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
         }
 
         .nav-links {
@@ -113,6 +122,25 @@
             color: var(--darker-forest);
             transform: translateY(-2px);
             box-shadow: 0 5px 25px rgba(188, 212, 166, 0.5);
+        }
+
+        /* Hamburger Toggle - Hidden on Desktop */
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            z-index: 1002; /* Above the mobile menu overlay */
+            position: relative;
+        }
+
+        .mobile-toggle .bar {
+            height: 2px;
+            width: 100%;
+            background-color: var(--cream);
+            transition: all 0.3s ease;
         }
 
         /* Hero Section */
@@ -473,13 +501,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* White background added for visibility of dark logos (Balsamiq, Hanson Bridgett, etc.) */
-            /* background: rgba(255, 255, 255, 0.9); */
             border-radius: 8px;
             padding: 1.5rem;
             width: 100%;
             height: 150px;
-            /* border: 1px solid rgba(188, 212, 166, 0.1); */
         }
 
         .sponsor-item img {
@@ -550,8 +575,71 @@
             opacity: 0.7;
         }
 
-        /* Mobile */
+        /* --- MOBILE MEDIA QUERIES --- */
         @media (max-width: 768px) {
+            .navbar {
+                padding: 1.2rem 1.5rem;
+                /* Navbar flex layout remains row: Logo Left, Hamburger Right */
+            }
+
+            .mobile-toggle {
+                display: flex; /* Show Hamburger */
+            }
+
+            /* The Mobile Menu Overlay */
+            .nav-content {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: var(--darker-forest);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 3rem;
+                
+                /* Animation states - Hidden by default */
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transform: translateY(-20px);
+                transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                z-index: 1001; /* Below Logo and Toggle but above content */
+            }
+
+            /* Active State (Added via JS) */
+            .nav-content.active {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: all;
+                transform: translateY(0);
+            }
+
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 2rem;
+            }
+
+            .nav-links a {
+                font-size: 1.5rem; /* Larger font for mobile tap targets */
+            }
+
+            /* Hamburger Animation to 'X' */
+            .mobile-toggle.active .bar:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+
+            .mobile-toggle.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .mobile-toggle.active .bar:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+
+            /* Other Mobile Adjustments */
             .orb-1, .orb-2 {
                 width: 250px;
                 height: 250px;
@@ -561,18 +649,6 @@
 
             .orb-1 { top: -5%; right: -15%; }
             .orb-2 { bottom: -5%; left: -15%; }
-
-            .navbar {
-                padding: 1rem 1.5rem;
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .nav-links {
-                flex-wrap: wrap;
-                gap: 1.5rem;
-                justify-content: center;
-            }
 
             .hero {
                 padding: 1rem;
@@ -589,7 +665,6 @@
 
             .content-grid, .prize-grid { grid-template-columns: 1fr; gap: 1.5rem; }
             
-            /* Sponsor Grid Mobile */
             .sponsor-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 1.5rem;
@@ -613,16 +688,28 @@
         <div class="gradient-orb orb-2"></div>
     </div>
 
+    <!-- UPDATED NAVBAR STRUCTURE -->
     <nav class="navbar">
         <div class="nav-logo">valley<span>hacks</span></div>
-        <ul class="nav-links">
-            <li><a href="#about">about</a></li>
-            <li><a href="#schedule">schedule</a></li>
-            <li><a href="#prizes">prizes</a></li>
-            <li><a href="#sponsors">sponsors</a></li>
-            <li><a href="#faq">faq</a></li>
-        </ul>
-        <button class="nav-cta">register</button>
+
+        <!-- The Hamburger Icon (Visible on Mobile) -->
+        <div class="mobile-toggle">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+
+        <!-- Links + Register Button wrapper -->
+        <div class="nav-content">
+            <ul class="nav-links">
+                <li><a href="#about">about</a></li>
+                <li><a href="#schedule">schedule</a></li>
+                <li><a href="#prizes">prizes</a></li>
+                <li><a href="#sponsors">sponsors</a></li>
+                <li><a href="#faq">faq</a></li>
+            </ul>
+            <button class="nav-cta">register</button>
+        </div>
     </nav>
 
     <section class="hero">
@@ -886,28 +973,8 @@
             });
         });
 
-        // 3. Navbar logic UPDATED
-        let lastScroll = 0;
-        const navbar = document.querySelector('.navbar');
-
-        lenis.on('scroll', ({ scroll }) => {
-            const currentScroll = scroll;
-            const isMobile = window.innerWidth <= 768;
-
-            if (currentScroll <= 0 || isMobile) {
-                navbar.style.transform = 'translateY(0)';
-                lastScroll = currentScroll; 
-                return;
-            }
-
-            if (currentScroll > lastScroll && currentScroll > 100) {
-                navbar.style.transform = 'translateY(-100%)';
-            } else {
-                navbar.style.transform = 'translateY(0)';
-            }
-
-            lastScroll = currentScroll;
-        });
+        // 3. Navbar Sticky Behavior (Always on top)
+        // Note: Logic to hide navbar on scroll has been removed to keep it "always on top"
 
         // 4. Parallax effect
         const orbs = document.querySelectorAll('.gradient-orb');
@@ -935,6 +1002,32 @@
 
         document.querySelectorAll('.reveal').forEach(el => {
             observer.observe(el);
+        });
+
+        // 6. Mobile Menu Logic
+        const hamburger = document.querySelector('.mobile-toggle');
+        const navContent = document.querySelector('.nav-content');
+        const navLinksItems = document.querySelectorAll('.nav-links a, .nav-cta');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navContent.classList.toggle('active');
+            
+            // Prevent background scrolling when menu is open
+            if (navContent.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Close menu when a link is clicked
+        navLinksItems.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navContent.classList.remove('active');
+                document.body.style.overflow = '';
+            });
         });
     </script>
 </body>
