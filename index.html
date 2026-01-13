@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>valleyhacks - Bay Area Hackathon</title>
+    <title>valleyhacks 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
 
     <style>
         * {
@@ -23,23 +22,7 @@
             --forest: #6b8268;
             --dark-forest: #1a1f1a;
             --darker-forest: #0f120f;
-        }
-
-        html.lenis,
-        html.lenis body {
-            height: auto;
-        }
-
-        .lenis.lenis-smooth {
-            scroll-behavior: auto !important;
-        }
-
-        .lenis.lenis-smooth [data-lenis-prevent] {
-            overscroll-behavior: contain;
-        }
-
-        .lenis.lenis-stopped {
-            overflow: hidden;
+            --accent-glow: rgba(188, 212, 166, 0.15);
         }
 
         body {
@@ -54,7 +37,7 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(15, 18, 15, 0.95);
+            background: rgba(15, 18, 15, 0.85);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border-bottom: 1px solid rgba(188, 212, 166, 0.1);
@@ -63,7 +46,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: padding 0.3s ease;
         }
 
         .nav-logo {
@@ -71,8 +53,6 @@
             font-weight: 700;
             color: var(--cream);
             letter-spacing: -0.02em;
-            z-index: 1002;
-            position: relative;
         }
 
         .nav-logo span {
@@ -94,7 +74,8 @@
         .nav-links a {
             color: var(--beige);
             text-decoration: none;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            text-transform: lowercase;
             transition: color 0.3s ease;
         }
 
@@ -102,58 +83,131 @@
             color: var(--sage-bright);
         }
 
-        .nav-cta {
-            padding: 0.7rem 1.5rem;
-            background: var(--sage-bright);
-            color: var(--darker-forest);
-            border: none;
-            font-family: 'Space Mono', monospace;
-            font-size: 0.9rem;
+        /* --- HERO SECTION (REVAMPED) --- */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            align-items: center;
+            padding: 0 5%;
+            gap: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-text {
+            z-index: 10;
+            max-width: 700px;
+        }
+
+        .hero-label {
+            color: var(--sage-bright);
+            letter-spacing: 0.3em;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .hero-title {
+            font-size: clamp(3.5rem, 8vw, 6.5rem);
             font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(188, 212, 166, 0.3);
+            line-height: 0.9;
+            margin-bottom: 2rem;
+            letter-spacing: -0.04em;
         }
 
-        .nav-cta:hover {
-            background: var(--cream);
-            color: var(--darker-forest);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 25px rgba(188, 212, 166, 0.5);
+        .hero-title .highlight {
+            color: var(--sage-bright);
+            display: block;
         }
 
-        .mobile-toggle {
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 30px;
-            height: 20px;
-            cursor: pointer;
-            z-index: 1002;
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--beige);
+            margin-bottom: 0.5rem;
+            max-width: 500px;
+        }
+
+        .hero-date {
+            font-size: 1rem;
+            color: var(--sage);
+            opacity: 0.8;
+        }
+
+        /* --- SLIDABLE GALLERY --- */
+        .slider-container {
+            position: relative;
+            height: 380px;
+            /* Reduced height */
+            /* width: 120rem !important; */
+            max-width: 550px;
+            /* Constrained width */
+            border: 1px solid rgba(188, 212, 166, 0.1);
+            overflow: hidden;
+            background: var(--dark-forest);
+            margin: 0 auto;
+        }
+
+        .slider-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
             position: relative;
         }
 
-        .mobile-toggle .bar {
-            height: 2px;
+        .slide img {
             width: 100%;
-            background-color: var(--cream);
-            transition: all 0.3s ease;
+            height: 100%;
+            object-fit: cover;
+            /* filter: grayscale(30%) contrast(110%); */
         }
 
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
+        .slide-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(transparent, rgba(15, 18, 15, 0.9));
+            color: var(--cream);
+            font-size: 0.85rem;
+        }
+
+        .slider-controls {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 20;
+        }
+
+        .slider-btn {
+            background: rgba(245, 243, 231, 0.1);
+            border: 1px solid rgba(245, 243, 231, 0.2);
+            color: var(--cream);
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-            padding: 2rem;
-            margin-top: 0;
-            padding-top: 100px;
-            background: transparent;
-            z-index: 1;
         }
 
+        .slider-btn:hover {
+            background: var(--sage-bright);
+            color: var(--darker-forest);
+        }
+
+        /* --- BACKGROUND ELEMENTS --- */
         .fixed-bg-container {
             position: fixed;
             top: 0;
@@ -161,12 +215,7 @@
             width: 100vw;
             height: 100vh;
             z-index: -1;
-            background: linear-gradient(180deg, var(--dark-forest) 0%, var(--darker-forest) 100%);
-            overflow: hidden;
-            transform: translate3d(0, 0, 0);
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            pointer-events: none;
+            background: var(--darker-forest);
         }
 
         .grid-bg {
@@ -175,25 +224,18 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image:
-                linear-gradient(rgba(188, 212, 166, 0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(188, 212, 166, 0.08) 1px, transparent 1px);
-            background-size: 50px 50px;
-            opacity: 0.6;
-            pointer-events: none;
-            will-change: transform;
-            transform: translateZ(0);
+            background-image: linear-gradient(var(--accent-glow) 1px, transparent 1px),
+                linear-gradient(90deg, var(--accent-glow) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.4;
         }
 
         .gradient-orb {
             position: absolute;
             border-radius: 50%;
             filter: blur(120px);
-            opacity: 0.25;
+            opacity: 0.15;
             pointer-events: none;
-            will-change: transform;
-            transform: translate3d(0, 0, 0);
-            backface-visibility: hidden;
         }
 
         .orb-1 {
@@ -212,288 +254,83 @@
             left: -10%;
         }
 
-        .hero-content {
-            max-width: 900px;
-            text-align: center;
-            position: relative;
-            z-index: 10;
-        }
-
-        .hero-title {
-            font-size: 6rem;
-            font-weight: 700;
-            color: var(--cream);
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.03em;
-            line-height: 1;
-            text-shadow: 0 0 60px rgba(188, 212, 166, 0.5);
-        }
-
-        .hero-title .highlight {
-            color: var(--sage-bright);
-            text-shadow: 0 0 40px rgba(188, 212, 166, 0.6);
-        }
-
-        .hero-subtitle {
-            font-size: 1.3rem;
-            color: var(--beige);
-            margin-bottom: 1rem;
-        }
-
-        .hero-date {
-            font-size: 1.1rem;
-            color: var(--sage-bright);
-            margin-bottom: 3rem;
-            text-shadow: 0 0 20px rgba(188, 212, 166, 0.3);
-        }
-
-        .cta-group {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 1rem 2.5rem;
-            font-family: 'Space Mono', monospace;
-            font-size: 1rem;
-            border: 2px solid transparent;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            font-weight: 700;
-        }
-
-        .btn-primary {
-            background: var(--sage-bright);
-            color: var(--darker-forest);
-            box-shadow: 0 0 30px rgba(188, 212, 166, 0.4);
-        }
-
-        .btn-primary:hover {
-            background: var(--cream);
-            color: var(--darker-forest);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 40px rgba(188, 212, 166, 0.6);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--sage-bright);
-            border: 2px solid var(--sage-bright);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(188, 212, 166, 0.15);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(188, 212, 166, 0.3);
-        }
-
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
+        /* --- CONTENT SECTIONS --- */
         section {
-            padding: 8rem 2rem;
+            padding: 10rem 5%;
             position: relative;
             z-index: 1;
         }
 
         .section-label {
-            text-align: center;
             color: var(--sage-bright);
-            font-size: 0.9rem;
-            letter-spacing: 0.2em;
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
             text-transform: uppercase;
             margin-bottom: 1rem;
         }
 
         .section-title {
-            text-align: center;
             font-size: 3.5rem;
             font-weight: 700;
-            color: var(--cream);
             margin-bottom: 4rem;
         }
 
         .content-grid {
-            max-width: 1200px;
-            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
         }
 
         .card {
             background: rgba(245, 243, 231, 0.03);
-            border: 1px solid rgba(188, 212, 166, 0.25);
-            padding: 2.5rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(5px);
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--sage-bright), var(--cream));
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
+            border: 1px solid rgba(188, 212, 166, 0.15);
+            padding: 3rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .card:hover {
             border-color: var(--sage-bright);
+            background: rgba(245, 243, 231, 0.06);
             transform: translateY(-10px);
-            background: rgba(245, 243, 231, 0.08);
-            box-shadow: 0 15px 50px rgba(188, 212, 166, 0.25);
-        }
-
-        .card:hover::before {
-            transform: scaleX(1);
         }
 
         .card-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            margin-bottom: 2rem;
         }
 
         .card-title {
-            font-size: 1.5rem;
-            color: var(--cream);
+            font-size: 1.4rem;
             margin-bottom: 1rem;
         }
 
         .card-description {
             color: var(--beige);
-            line-height: 1.7;
+            line-height: 1.6;
             font-size: 0.95rem;
         }
 
-        .team-image-placeholder {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 1.5rem;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid var(--sage-bright);
-            box-shadow: 0 0 20px rgba(188, 212, 166, 0.3);
-        }
-
-        .team-image-placeholder img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .timeline {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .timeline-item {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .timeline-time {
-            min-width: 150px;
-            color: var(--sage-bright);
-            font-size: 1rem;
-            padding-top: 0.3rem;
-        }
-
-        .timeline-content {
-            flex: 1;
-            padding-bottom: 2rem;
-            border-left: 2px solid rgba(188, 212, 166, 0.4);
-            padding-left: 2rem;
-            position: relative;
-        }
-
-        .timeline-content::before {
-            content: '';
-            position: absolute;
-            left: -6px;
-            top: 8px;
-            width: 10px;
-            height: 10px;
-            background: var(--sage-bright);
-            border-radius: 50%;
-            box-shadow: 0 0 15px rgba(188, 212, 166, 0.7);
-        }
-
-        .timeline-title {
-            font-size: 1.3rem;
-            color: var(--cream);
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-desc {
-            color: var(--beige);
-            line-height: 1.6;
-        }
-
+        /* Prizes */
         .prize-grid {
-            max-width: 1100px;
-            margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
         }
 
         .prize-card {
-            background: rgba(162, 184, 143, 0.08);
-            border: 2px solid rgba(162, 184, 143, 0.3);
-            padding: 3rem 2rem;
+            border: 1px solid var(--sage);
+            padding: 4rem 2rem;
             text-align: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-
-        .prize-card:hover {
-            border-color: var(--sage);
-            transform: translateY(-10px);
-            background: rgba(162, 184, 143, 0.12);
-            box-shadow: 0 10px 40px rgba(162, 184, 143, 0.2);
-        }
-
-        .prize-place {
-            font-size: 1rem;
-            color: var(--beige);
-            margin-bottom: 1rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
         }
 
         .prize-amount {
-            font-size: 3.5rem;
+            font-size: 4rem;
+            color: var(--sage-bright);
             font-weight: 700;
-            color: var(--sage);
-            margin-bottom: 1rem;
-            text-shadow: 0 0 20px rgba(162, 184, 143, 0.3);
+            margin: 1rem 0;
         }
 
-        .prize-details {
-            color: var(--beige);
-            font-size: 0.9rem;
-        }
-
+        /* Sponsors */
         .sponsor-grid {
             max-width: 1100px;
             margin: 0 auto;
@@ -520,160 +357,80 @@
             object-fit: contain;
         }
 
-        .faq-item {
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            background: rgba(245, 243, 231, 0.03);
-            border: 1px solid rgba(188, 212, 166, 0.25);
-            padding: 2rem;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
+        /* Team & Judges */
+        .team-image-placeholder {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            border: 2px solid var(--sage);
         }
 
-        .faq-item:hover {
-            border-color: var(--sage-bright);
-            background: rgba(245, 243, 231, 0.06);
-            box-shadow: 0 5px 25px rgba(188, 212, 166, 0.15);
-        }
-
-        .faq-question {
-            font-size: 1.2rem;
-            color: var(--cream);
-            margin-bottom: 1rem;
-        }
-
-        .faq-answer {
-            color: var(--beige);
-            line-height: 1.7;
+        .team-image-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         footer {
-            background: rgba(0, 0, 0, 0.8);
-            border-top: 1px solid rgba(188, 212, 166, 0.25);
-            padding: 4rem 2rem;
+            padding: 5rem 5%;
+            border-top: 1px solid rgba(188, 212, 166, 0.1);
             text-align: center;
-            position: relative;
-            z-index: 2;
         }
 
         .footer-links {
+            margin-bottom: 2rem;
             display: flex;
             justify-content: center;
             gap: 2rem;
-            margin-bottom: 2rem;
         }
 
         .footer-links a {
-            color: var(--sage-bright);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--cream);
-        }
-
-        .footer-text {
             color: var(--beige);
-            font-size: 0.9rem;
-            opacity: 0.7;
+            text-decoration: none;
+            font-size: 0.8rem;
         }
 
-        @media (max-width: 768px) {
+        /* Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 150px;
+                text-align: center;
+            }
+
+            .hero-text {
+                margin: 0 auto;
+            }
+
+            .hero-subtitle {
+                margin: 0 auto 1rem;
+            }
+
+            .slider-container {
+                height: 50vh;
+                margin-top: 3rem;
+            }
+
             .navbar {
                 padding: 1.2rem 1.5rem;
             }
 
-            .mobile-toggle {
-                display: flex;
-            }
-
-            .nav-content {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                background: var(--darker-forest);
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 3rem;
-                opacity: 0;
-                visibility: hidden;
-                pointer-events: none;
-                transform: translateY(-20px);
-                transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-                z-index: 1001;
-            }
-
-            .nav-content.active {
-                opacity: 1;
-                visibility: visible;
-                pointer-events: all;
-                transform: translateY(0);
-            }
-
             .nav-links {
-                flex-direction: column;
-                align-items: center;
-                gap: 2rem;
+                display: none;
             }
-
-            .nav-links a {
-                font-size: 1.5rem;
-            }
-
-            .mobile-toggle.active .bar:nth-child(1) {
-                transform: translateY(9px) rotate(45deg);
-            }
-
-            .mobile-toggle.active .bar:nth-child(2) {
-                opacity: 0;
-            }
-
-            .mobile-toggle.active .bar:nth-child(3) {
-                transform: translateY(-9px) rotate(-45deg);
-            }
-
-            .orb-1, .orb-2 {
-                width: 250px;
-                height: 250px;
-                opacity: 0.15;
-                filter: blur(80px);
-            }
-
-            .orb-1 { top: -5%; right: -15%; }
-            .orb-2 { bottom: -5%; left: -15%; }
-
-            .hero {
-                padding: 1rem;
-                margin-top: 120px;
-            }
-
-            .hero-title { font-size: 2.5rem; }
-            .hero-subtitle { font-size: 1rem; }
-            .section-title { font-size: 2rem; }
-
-            .timeline-item { flex-direction: column; gap: 0.5rem; }
-            .timeline-time { min-width: auto; font-size: 0.9rem; }
-            .timeline-content { padding-left: 1.5rem; }
-
-            .content-grid, .prize-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-            
-            .sponsor-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1.5rem;
-            }
-            .sponsor-item {
-                padding: 1rem;
-                height: 80px;
-            }
-
-            .card { padding: 2rem; }
-            .cta-group { flex-direction: column; width: 100%; gap: 1rem; }
-            .btn { width: 100%; }
         }
     </style>
 </head>
@@ -687,183 +444,148 @@
 
     <nav class="navbar">
         <div class="nav-logo">valley<span>hacks</span></div>
-
-        <div class="mobile-toggle">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </div>
-
         <div class="nav-content">
             <ul class="nav-links">
                 <li><a href="#about">about</a></li>
-                <li><a href="#schedule">schedule</a></li>
                 <li><a href="#prizes">prizes</a></li>
                 <li><a href="#sponsors">sponsors</a></li>
                 <li><a href="#judges">judges</a></li>
                 <li><a href="#team">team</a></li>
-                <li><a href="#faq">faq</a></li>
             </ul>
-            <button onclick="location.href='https://forms.gle/4JYfNGxD7jqRsowV9'" type="button" class="nav-cta">register</button>
         </div>
     </nav>
 
-    <section class="hero">
-        <div class="hero-content reveal">
+    <header class="hero">
+        <div class="hero-text reveal">
+            <span class="hero-label">Mission Accomplished</span>
             <h1 class="hero-title">valley<span class="highlight">hacks</span></h1>
-            <p class="hero-subtitle">7 hours of building, learning, and innovation</p>
-            <p class="hero-date">jan 10, 2026 | newark, ca</p>
-            <div class="cta-group">
-                <a href="https://forms.gle/4JYfNGxD7jqRsowV9" class="btn btn-primary">register now</a>
-                <a href="#about" class="btn btn-secondary">learn more</a>
+            <p class="hero-subtitle">Thank you for joining us in the heart of Newark for an incredible weekend of
+                building.</p>
+            <p class="hero-date">Jan 10, 2026 // Newark, CA</p>
+        </div>
+
+        <div class="slider-container reveal">
+            <div class="slider-track" id="sliderTrack">
+                                <div class="slide">
+                    <img src="/pics/event/8.png" alt="Networking">
+                    <!-- <div class="slide-overlay">Building Connections</div> -->
+                </div>
+                <div class="slide">
+                    <img src="/pics/event/1.png" alt="Hackathon">
+                    <!-- <div class="slide-overlay">Opening Ceremony Energy</div> -->
+                </div>
+                <div class="slide">
+                    <img src="/pics/event/2.png" alt="Coding">
+                    <!-- <div class="slide-overlay">Deep in the Flow</div> -->
+                </div>
+                <div class="slide">
+                    <img src="/pics/event/3.png" alt="Collaboration">
+                    <!-- <div class="slide-overlay">Collaborative Spirit</div> -->
+                </div>
+                <div class="slide">
+                    <img src="/pics/event/4.png" alt="Networking">
+                    <!-- <div class="slide-overlay">Building Connections</div> -->
+                </div>
+                <div class="slide">
+                    <img src="/pics/event/5.png" alt="Networking">
+                    <!-- <div class="slide-overlay">Building Connections</div> -->
+                </div>
+                                <div class="slide">
+                    <img src="/pics/event/6.png" alt="Networking">
+                    <!-- <div class="slide-overlay">Building Connections</div> -->
+                </div>
+                                <div class="slide">
+                    <img src="/pics/event/7.png" alt="Networking">
+                    <!-- <div class="slide-overlay">Building Connections</div> -->
+                </div>
+            </div>
+            <div class="slider-controls">
+                <button class="slider-btn" id="prevBtn">←</button>
+                <button class="slider-btn" id="nextBtn">→</button>
             </div>
         </div>
-    </section>
+    </header>
 
     <section id="about">
         <div class="reveal">
-            <div class="section-label">what we're about</div>
-            <h2 class="section-title">build. learn. connect.</h2>
+            <p class="section-label">Legacy</p>
+            <h2 class="section-title">Build. Learn. Connect.</h2>
         </div>
         <div class="content-grid">
             <div class="card reveal">
                 <div class="card-icon">⚡</div>
-                <h3 class="card-title">build anything</h3>
-                <p class="card-description">
-                    7 hours to bring your ideas to life. Web apps, mobile apps, hardware, AI—if you can dream it, you
-                    can build it. Teams of 1-4.
-                </p>
+                <h3 class="card-title">Build Anything</h3>
+                <p class="card-description">From AI agents to hardware hacks, builders had 7 hours to push the limits of
+                    what's possible.</p>
             </div>
             <div class="card reveal">
                 <div class="card-icon">🎓</div>
-                <h3 class="card-title">learn from pros</h3>
-                <p class="card-description">
-                    Workshops from engineers at top tech companies. Master new frameworks, APIs, and tools through
-                    hands-on sessions.
-                </p>
+                <h3 class="card-title">Learn from Pros</h3>
+                <p class="card-description">Workshops led by engineers from Meta, Oracle, and Anthropic provided
+                    hands-on mentorship.</p>
             </div>
             <div class="card reveal">
                 <div class="card-icon">🤝</div>
-                <h3 class="card-title">meet builders</h3>
-                <p class="card-description">
-                    Network with hackers, founders, and engineers from across the Bay. Find co-founders and join a
-                    community of creators.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <section id="schedule">
-        <div class="reveal">
-            <div class="section-label">timeline</div>
-            <h2 class="section-title">event schedule</h2>
-        </div>
-        <div class="timeline">
-            <div class="timeline-item reveal">
-                <div class="timeline-time">10:00 am</div>
-                <div class="timeline-content">
-                    <div class="timeline-title">check-in & breakfast</div>
-                    <div class="timeline-desc">Registration opens. Grab breakfast and meet your fellow hackers.</div>
-                </div>
-            </div>
-            <div class="timeline-item reveal">
-                <div class="timeline-time">10:30 am</div>
-                <div class="timeline-content">
-                    <div class="timeline-title">opening ceremony</div>
-                    <div class="timeline-desc">Kickoff, rules, sponsor intros. Then hacking begins!</div>
-                </div>
-            </div>
-            <div class="timeline-item reveal">
-                <div class="timeline-time">11:00 am</div>
-                <div class="timeline-content">
-                    <div class="timeline-title">hacking starts</div>
-                    <div class="timeline-desc">Start building! Workshops and mentors available throughout.</div>
-                </div>
-            </div>
-            <div class="timeline-item reveal">
-                <div class="timeline-time">12:30 pm</div>
-                <div class="timeline-content">
-                    <div class="timeline-title">lunch</div>
-                    <div class="timeline-desc">Fuel up and keep building.</div>
-                </div>
-            </div>
-            <div class="timeline-item reveal">
-                <div class="timeline-time">2:00 pm</div>
-                <div class="timeline-content">
-                    <div class="timeline-title">workshop sessions</div>
-                    <div class="timeline-desc">Technical workshops on various topics.</div>
-                </div>
-            </div>
-            <div class="timeline-item reveal">
-                <div class="timeline-time">4:00 pm</div>
-                <div class="timeline-content">
-                    <div class="timeline-title">submissions due</div>
-                    <div class="timeline-desc">Hacking ends. Submit your projects and prepare demos.</div>
-                </div>
-            </div>
-            <div class="timeline-item reveal">
-                <div class="timeline-time">4:30 pm</div>
-                <div class="timeline-content">
-                    <div class="timeline-title">demos & awards</div>
-                    <div class="timeline-desc">Show off your projects. Winners announced at closing ceremony!</div>
-                </div>
+                <h3 class="card-title">Meet Builders</h3>
+                <p class="card-description">A community of creators coming together to share ideas and form lasting
+                    partnerships.</p>
             </div>
         </div>
     </section>
 
     <section id="prizes">
         <div class="reveal">
-            <div class="section-label">rewards</div>
-            <h2 class="section-title">prizes</h2>
+            <p class="section-label">The Rewards</p>
+            <h2 class="section-title">2026 Prizes</h2>
         </div>
         <div class="prize-grid">
             <div class="prize-card reveal">
-                <div class="prize-place">1st place</div>
+                <p>1st Place</p>
                 <div class="prize-amount">$100</div>
-                <div class="prize-details">+ swag + subscriptions</div>
+                <p>+ subscriptions + certificate</p>
             </div>
             <div class="prize-card reveal">
-                <div class="prize-place">2nd place</div>
+                <p>2nd Place</p>
                 <div class="prize-amount">$50</div>
-                <div class="prize-details">+ swag + subscriptions</div>
+                <p>+ subscriptions + certificate</p>
             </div>
             <div class="prize-card reveal">
-                <div class="prize-place">3rd place</div>
+                <p>3rd Place</p>
                 <div class="prize-amount">$25</div>
-                <div class="prize-details">+ swag + subscriptions</div>
+                <p>+ subscriptions + certificate</p>
             </div>
         </div>
     </section>
 
     <section id="sponsors">
         <div class="reveal">
-            <div class="section-label">our partners</div>
-            <h2 class="section-title">sponsors</h2>
+            <p class="section-label">Partners</p>
+            <h2 class="section-title">Supported By</h2>
         </div>
         <div class="sponsor-grid">
-            <a href="https://tpumps.com" target="_blank" class="sponsor-item reveal">
-                <img src="https://static.wixstatic.com/media/131e23_e604c808492a4ae5a9cc571a4f77cc68~mv2.png/v1/fill/w_628,h_198,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Tpumps%20Logo%20Purple.png" alt="Tpumps">
-            </a>
-            <a href="https://lovable.dev" target="_blank" class="sponsor-item reveal">
-                <img src="https://lovable.dev/img/logo/lovable-logo-bg-dark.png" alt="Lovable">
-            </a>
-            <a href="https://codecrafters.io" target="_blank" class="sponsor-item reveal">
-                <img src="https://codecrafters.io/images/logo.png" alt="CodeCrafters">
-            </a>
-            <a href="https://unibee.dev" target="_blank" class="sponsor-item reveal">
-                <img src="https://unibee.dev/wp-content/uploads/2025/02/1703055521790.jpg" alt="Unibee">
-            </a>
+            <a href="https://tpumps.com" target="_blank" class="sponsor-item reveal"><img
+                    src="https://static.wixstatic.com/media/131e23_e604c808492a4ae5a9cc571a4f77cc68~mv2.png/v1/fill/w_628,h_198,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Tpumps%20Logo%20Purple.png"
+                    alt="Tpumps"></a>
+            <a href="https://lovable.dev" target="_blank" class="sponsor-item reveal"><img
+                    src="https://lovable.dev/img/logo/lovable-logo-bg-dark.png" alt="Lovable"></a>
+            <a href="https://codecrafters.io" target="_blank" class="sponsor-item reveal"><img
+                    src="https://codecrafters.io/images/logo.png" alt="CodeCrafters"></a>
+            <a href="https://unibee.dev" target="_blank" class="sponsor-item reveal"><img
+                    src="https://unibee.dev/wp-content/uploads/2025/02/1703055521790.jpg" alt="Unibee"></a>
             <a href="https://hansonbridgett.com" target="_blank" class="sponsor-item reveal">
-                <img src="https://www.hansonbridgett.com/sites/default/files/styles/twitter_card/public/2025-08/hanson-bridgett-1000x1000.png?itok=O7OQVzdO" alt="Hanson Bridgett">
+                <img src="https://www.hansonbridgett.com/sites/default/files/styles/twitter_card/public/2025-08/hanson-bridgett-1000x1000.png?itok=O7OQVzdO"
+                    alt="Hanson Bridgett">
             </a>
             <a href="https://nordvpn.com" target="_blank" class="sponsor-item reveal">
                 <img src="https://assets-prd.ignimgs.com/2022/11/17/wired-nordvpn-2-1668720064002.png" alt="NordVPN">
             </a>
             <a href="https://nordpass.com" target="_blank" class="sponsor-item reveal">
-                <img src="https://www.zdnet.com/a/img/resize/c1b1d83f97c80fa38fcc346339fd0f3b5e671ff7/2024/10/30/07400539-44ba-44c8-afba-dddacb4bd2b1/nordpass.png?auto=webp&fit=crop&height=1200&width=1200    " alt="NordPass">
+                <img src="https://www.zdnet.com/a/img/resize/c1b1d83f97c80fa38fcc346339fd0f3b5e671ff7/2024/10/30/07400539-44ba-44c8-afba-dddacb4bd2b1/nordpass.png?auto=webp&fit=crop&height=1200&width=1200    "
+                    alt="NordPass">
             </a>
             <a href="https://nexos.ai" target="_blank" class="sponsor-item reveal">
-                <img src="https://lever-client-logos.s3.us-west-2.amazonaws.com/85f55f08-16c4-45eb-8455-e8978a378db4-1743516114537.png" onerror="this.src='https://avatars.githubusercontent.com/u/152646639?s=200&v=4'" alt="Nexos.ai">
+                <img src="https://lever-client-logos.s3.us-west-2.amazonaws.com/85f55f08-16c4-45eb-8455-e8978a378db4-1743516114537.png"
+                    onerror="this.src='https://avatars.githubusercontent.com/u/152646639?s=200&v=4'" alt="Nexos.ai">
             </a>
             <a href="https://saily.com" target="_blank" class="sponsor-item reveal">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/2/29/Saily.png" alt="Saily">
@@ -872,19 +594,20 @@
                 <img src="https://nordprotect.com/og.png" alt="NordProtect">
             </a>
             <a href="https://incogni.com" target="_blank" class="sponsor-item reveal">
-                <img src="https://cyberinsider.com/wp-content/uploads/2025/07/Incogni-Review--1024x470.png" alt="Incogni">
+                <img src="https://cyberinsider.com/wp-content/uploads/2025/07/Incogni-Review--1024x470.png"
+                    alt="Incogni">
             </a>
             <a href="https://balsamiq.com" target="_blank" class="sponsor-item reveal">
-                <img src="https://media.licdn.com/dms/image/v2/D560BAQF8lnwZrVhnnw/company-logo_200_200/B56ZVBhIw8HQAI-/0/1740560960970/balsamiq_logo?e=2147483647&v=beta&t=jwJR2zrHl6qK_wfsKBW1h_qudMQd0hXC5J_kZKrl7Ec" alt="Balsamiq">
+                <img src="https://media.licdn.com/dms/image/v2/D560BAQF8lnwZrVhnnw/company-logo_200_200/B56ZVBhIw8HQAI-/0/1740560960970/balsamiq_logo?e=2147483647&v=beta&t=jwJR2zrHl6qK_wfsKBW1h_qudMQd0hXC5J_kZKrl7Ec"
+                    alt="Balsamiq">
             </a>
         </div>
     </section>
 
-
     <section id="judges">
         <div class="reveal">
-            <div class="section-label">expert panel</div>
-            <h2 class="section-title">judges</h2>
+            <p class="section-label">Experts</p>
+            <h2 class="section-title">The Judges</h2>
         </div>
         <div class="content-grid">
             <div class="card reveal">
@@ -929,41 +652,28 @@
             </div>
         </div>
     </section>
-    
+
     <section id="team">
         <div class="reveal">
-            <div class="section-label">meet the organizers</div>
-            <h2 class="section-title">team</h2>
+            <p class="section-label">Organizers</p>
+            <h2 class="section-title">The Team</h2>
         </div>
         <div class="content-grid">
             <div class="card reveal">
-                <div class="team-image-placeholder">
-                    <img src="/pics/gurjus.jpg" alt="Gurjus Bhasin">
-                </div>
+                <div class="team-image-placeholder"><img src="/pics/gurjus.jpg" alt="Gurjus"></div>
                 <h3 class="card-title">gurjus bhasin</h3>
-                <p class="card-description">
-                    lead organizer
-                </p>
+                <p class="card-description">lead organizer</p>
             </div>
             <div class="card reveal">
-                <div class="team-image-placeholder">
-                    <img src="/pics/ridhima.jpg" alt="Ridhima Kapoor" style='object-position:center'>
-                </div>
+                <div class="team-image-placeholder"><img src="/pics/ridhima.jpg" alt="Ridhima"></div>
                 <h3 class="card-title">ridhima kapoor</h3>
-                <p class="card-description">
-                    lead organizer
-                </p>
+                <p class="card-description">lead Organizer</p>
             </div>
             <div class="card reveal">
-                <div class="team-image-placeholder">
-                    <img src="/pics/vignesh.png" alt="Vignesh K.R.">
-                </div>
+                <div class="team-image-placeholder"><img src="/pics/vignesh.png" alt="Vignesh"></div>
                 <h3 class="card-title">vignesh k.r.</h3>
-                <p class="card-description">
-                    lead organizer
-                </p>
+                <p class="card-description">lead organizer</p>
             </div>
-
             <div class="card reveal">
                 <div class="team-image-placeholder">
                     <img src="/pics/aarna.png" alt="Aarna Gupta">
@@ -986,101 +696,46 @@
         </div>
     </section>
 
-    <section id="faq">
-        <div class="reveal">
-            <div class="section-label">questions</div>
-            <h2 class="section-title">faq</h2>
-        </div>
-
-        <div class="faq-item reveal">
-            <div class="faq-question">who can attend?</div>
-            <div class="faq-answer">
-                Any student (high school or college) or recent grad within 2 years. All skill levels welcome—never coded
-                before? Perfect, we'll help you learn!
-            </div>
-        </div>
-
-        <div class="faq-item reveal">
-            <div class="faq-question">how much does it cost?</div>
-            <div class="faq-answer">
-                Nothing! Completely free. We provide meals, swag, workshops, and prizes. Just bring your laptop,
-                charger, and creativity.
-            </div>
-        </div>
-
-        <div class="faq-item reveal">
-            <div class="faq-question">what about teams?</div>
-            <div class="faq-answer">
-                Teams of 1-4 people. Come solo and find teammates at the event, or bring your own crew. We'll have team
-                formation activities.
-            </div>
-        </div>
-
-        <div class="faq-item reveal">
-            <div class="faq-question">what should I bring?</div>
-            <div class="faq-answer">
-                Laptop, chargers, and anything else you need to build your project. We'll provide the rest!
-            </div>
-        </div>
-    </section>
-
     <footer>
         <div class="footer-links">
-            <a href="#">twitter</a>
-            <a href="https://www.instagram.com/valley_hacks">instagram</a>
-            <a href="https://discord.com/invite/scjs2CZZb">discord</a>
-            <a href="mailto:contact@valleyhacks.org">email</a>
+            <a href="https://www.instagram.com/valley_hacks">Instagram</a>
+            <a href="https://discord.com/invite/scjs2CZZb">Discord</a>
+            <a href="mailto:contact@valleyhacks.org">Email</a>
         </div>
-        <p class="footer-text">© 2026 valleyhacks. built with passion in the bay area. contact: contact@valleyhacks.org</p>
+        <p style="opacity: 0.5; font-size: 0.7rem;">© 2026 VALLEYHACKS. BUILT IN THE BAY AREA.<br>WEBSITE DESIGNED BY <a style='color: inherit' href="https://gurjus.me">GURJUS BHASIN</a></p>
     </footer>
 
     <script>
-        if (history.scrollRestoration) {
-            history.scrollRestoration = 'manual';
-        }
-        window.scrollTo(0, 0);
 
-        const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            direction: 'vertical',
-            gestureDirection: 'vertical',
-            smooth: true,
-            mouseMultiplier: 1,
-            smoothTouch: false,
-            touchMultiplier: 2,
-        });
+        // Slider Logic
+        const track = document.getElementById('sliderTrack');
+        const slides = document.querySelectorAll('.slide');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        let index = 0;
 
-        lenis.scrollTo(0, { immediate: true });
-
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
+        function updateSlider() {
+            track.style.transform = `translateX(-${index * 100}%)`;
         }
 
-        requestAnimationFrame(raf);
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                lenis.scrollTo(this.getAttribute('href'));
-            });
+        nextBtn.addEventListener('click', () => {
+            index = (index + 1) % slides.length;
+            updateSlider();
         });
 
-        const orbs = document.querySelectorAll('.gradient-orb');
-
-        lenis.on('scroll', ({ scroll }) => {
-            orbs.forEach((orb, index) => {
-                const speed = (index + 1) * 0.4;
-                orb.style.transform = `translate3d(0, ${scroll * speed}px, 0)`;
-            });
+        prevBtn.addEventListener('click', () => {
+            index = (index - 1 + slides.length) % slides.length;
+            updateSlider();
         });
 
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: "0px 0px -50px 0px"
-        };
+        // Auto slide
+        setInterval(() => {
+            index = (index + 1) % slides.length;
+            updateSlider();
+        }, 5000);
 
+        // Intersection Observer for Reveal
+        const observerOptions = { threshold: 0.1 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -1089,34 +744,10 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.reveal').forEach(el => {
-            observer.observe(el);
-        });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        const hamburger = document.querySelector('.mobile-toggle');
-        const navContent = document.querySelector('.nav-content');
-        const navLinksItems = document.querySelectorAll('.nav-links a, .nav-cta');
 
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navContent.classList.toggle('active');
-            
-            if (navContent.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = '';
-            }
-        });
-
-        navLinksItems.forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                navContent.classList.remove('active');
-                document.body.style.overflow = '';
-            });
-        });
     </script>
 </body>
 
 </html>
-
