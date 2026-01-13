@@ -83,6 +83,24 @@
             color: var(--sage-bright);
         }
 
+        /* HAMBURGER MENU STYLES */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            z-index: 1100;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background-color: var(--cream);
+            transition: all 0.3s ease;
+        }
+
         /* --- HERO SECTION (REVAMPED) --- */
         .hero {
             min-height: 100vh;
@@ -139,10 +157,7 @@
         .slider-container {
             position: relative;
             height: 380px;
-            /* Reduced height */
-            /* width: 120rem !important; */
             max-width: 550px;
-            /* Constrained width */
             border: 1px solid rgba(188, 212, 166, 0.1);
             overflow: hidden;
             background: var(--dark-forest);
@@ -152,7 +167,8 @@
         .slider-track {
             display: flex;
             height: 100%;
-            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
         }
 
         .slide {
@@ -165,18 +181,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* filter: grayscale(30%) contrast(110%); */
-        }
-
-        .slide-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 2rem;
-            background: linear-gradient(transparent, rgba(15, 18, 15, 0.9));
-            color: var(--cream);
-            font-size: 0.85rem;
         }
 
         .slider-controls {
@@ -286,6 +290,10 @@
             border: 1px solid rgba(188, 212, 166, 0.15);
             padding: 3rem;
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
         .card:hover {
@@ -404,6 +412,7 @@
             transform: translateY(0);
         }
 
+        /* --- MOBILE RESPONSIVE FIXES --- */
         @media (max-width: 1024px) {
             .hero {
                 grid-template-columns: 1fr;
@@ -428,8 +437,93 @@
                 padding: 1.2rem 1.5rem;
             }
 
+            /* HAMBURGER TOGGLE LOGIC */
+            .hamburger {
+                display: flex;
+            }
+
             .nav-links {
-                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(15, 18, 15, 0.98);
+                flex-direction: column;
+                gap: 0;
+                padding: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.4s ease-in-out;
+                border-bottom: 1px solid rgba(188, 212, 166, 0.1);
+                text-align: center;
+            }
+
+            .nav-links.active {
+                max-height: 400px; /* Adjust based on number of links */
+                padding: 2rem 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+                padding: 1rem 0;
+            }
+
+            .nav-links a {
+                font-size: 1.1rem;
+                display: block;
+            }
+
+            /* HAMBURGER ANIMATION */
+            .hamburger.active span:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger.active span:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: 5rem 5%;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+                margin-bottom: 2rem;
+            }
+
+            /* Fixing Sponsors on Mobile */
+            .sponsor-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+            }
+
+            .sponsor-item {
+                height: 100px;
+                padding: 0.5rem;
+            }
+
+            /* Fixing Judges & Team on Mobile */
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .card {
+                padding: 2rem 1.5rem;
+            }
+
+            .prize-amount {
+                font-size: 3rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .sponsor-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -445,7 +539,12 @@
     <nav class="navbar">
         <div class="nav-logo">valley<span>hacks</span></div>
         <div class="nav-content">
-            <ul class="nav-links">
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
                 <li><a href="#about">about</a></li>
                 <li><a href="#prizes">prizes</a></li>
                 <li><a href="#sponsors">sponsors</a></li>
@@ -466,37 +565,29 @@
 
         <div class="slider-container reveal">
             <div class="slider-track" id="sliderTrack">
-                                <div class="slide">
+                <div class="slide">
                     <img src="/pics/event/8.png" alt="Networking">
-                    <!-- <div class="slide-overlay">Building Connections</div> -->
                 </div>
                 <div class="slide">
                     <img src="/pics/event/1.png" alt="Hackathon">
-                    <!-- <div class="slide-overlay">Opening Ceremony Energy</div> -->
                 </div>
                 <div class="slide">
                     <img src="/pics/event/2.png" alt="Coding">
-                    <!-- <div class="slide-overlay">Deep in the Flow</div> -->
                 </div>
                 <div class="slide">
                     <img src="/pics/event/3.png" alt="Collaboration">
-                    <!-- <div class="slide-overlay">Collaborative Spirit</div> -->
                 </div>
                 <div class="slide">
                     <img src="/pics/event/4.png" alt="Networking">
-                    <!-- <div class="slide-overlay">Building Connections</div> -->
                 </div>
                 <div class="slide">
                     <img src="/pics/event/5.png" alt="Networking">
-                    <!-- <div class="slide-overlay">Building Connections</div> -->
                 </div>
-                                <div class="slide">
+                <div class="slide">
                     <img src="/pics/event/6.png" alt="Networking">
-                    <!-- <div class="slide-overlay">Building Connections</div> -->
                 </div>
-                                <div class="slide">
+                <div class="slide">
                     <img src="/pics/event/7.png" alt="Networking">
-                    <!-- <div class="slide-overlay">Building Connections</div> -->
                 </div>
             </div>
             <div class="slider-controls">
@@ -702,37 +793,90 @@
             <a href="https://discord.com/invite/scjs2CZZb">Discord</a>
             <a href="mailto:contact@valleyhacks.org">Email</a>
         </div>
-        <p style="opacity: 0.5; font-size: 0.7rem;">© 2026 VALLEYHACKS. BUILT IN THE BAY AREA.<br>WEBSITE DESIGNED BY <a style='color: inherit' href="https://gurjus.me">GURJUS BHASIN</a></p>
+        <p style="opacity: 0.5; font-size: 0.7rem;">© 2026 VALLEYHACKS. BUILT IN THE BAY AREA.<br>WEBSITE DESIGNED BY <a
+                style='color: inherit' href="https://gurjus.me">GURJUS BHASIN</a></p>
     </footer>
 
     <script>
+        // Hamburger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
 
         // Slider Logic
         const track = document.getElementById('sliderTrack');
-        const slides = document.querySelectorAll('.slide');
+        const slides = Array.from(document.querySelectorAll('.slide'));
         const nextBtn = document.getElementById('nextBtn');
         const prevBtn = document.getElementById('prevBtn');
-        let index = 0;
+
+        const firstClone = slides[0].cloneNode(true);
+        const lastClone = slides[slides.length - 1].cloneNode(true);
+
+        track.appendChild(firstClone);
+        track.prepend(lastClone);
+
+        let index = 1;
+        const transitionStyle = "transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)";
+
+        track.style.transition = "none";
+        track.style.transform = `translateX(-${index * 100}%)`;
 
         function updateSlider() {
+            track.style.transition = transitionStyle;
             track.style.transform = `translateX(-${index * 100}%)`;
         }
 
+        track.addEventListener('transitionend', () => {
+            if (index === 0) {
+                track.style.transition = "none";
+                index = slides.length;
+                track.style.transform = `translateX(-${index * 100}%)`;
+            }
+            if (index === slides.length + 1) {
+                track.style.transition = "none";
+                index = 1;
+                track.style.transform = `translateX(-${index * 100}%)`;
+            }
+        });
+
         nextBtn.addEventListener('click', () => {
-            index = (index + 1) % slides.length;
+            if (index >= slides.length + 1) return;
+            index++;
             updateSlider();
         });
 
         prevBtn.addEventListener('click', () => {
-            index = (index - 1 + slides.length) % slides.length;
+            if (index <= 0) return;
+            index--;
             updateSlider();
         });
 
-        // Auto slide
-        setInterval(() => {
-            index = (index + 1) % slides.length;
+        let autoSlide = setInterval(() => {
+            index++;
             updateSlider();
         }, 5000);
+
+        [nextBtn, prevBtn].forEach(btn => {
+            btn.addEventListener('click', () => {
+                clearInterval(autoSlide);
+                autoSlide = setInterval(() => {
+                    index++;
+                    updateSlider();
+                }, 5000);
+            });
+        });
 
         // Intersection Observer for Reveal
         const observerOptions = { threshold: 0.1 };
@@ -745,8 +889,6 @@
         }, observerOptions);
 
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-
     </script>
 </body>
 
