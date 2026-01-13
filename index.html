@@ -526,6 +526,47 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* --- BEVEL FEEDBACK BUTTON --- */
+.feedback-btn {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 1rem 2rem;
+    background: var(--sage);
+    color: var(--darker-forest);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    
+    /* The Bevel Effect */
+    box-shadow: 
+        inset 2px 2px 0px rgba(255, 255, 255, 0.4), /* Top/Left Highlight */
+        inset -2px -2px 0px rgba(0, 0, 0, 0.2),    /* Bottom/Right Shadow */
+        0px 6px 0px #4a5c48;                       /* Bottom Depth (Darker Forest shade) */
+    
+    transition: all 0.1s ease;
+}
+
+.feedback-btn:hover {
+    background: var(--sage-bright);
+    transform: translateY(2px);
+    box-shadow: 
+        inset 2px 2px 0px rgba(255, 255, 255, 0.4),
+        inset -2px -2px 0px rgba(0, 0, 0, 0.2),
+        0px 4px 0px #4a5c48;
+}
+
+.feedback-btn:active {
+    transform: translateY(6px); /* Moves down to cover the depth */
+    box-shadow: 
+        inset 2px 2px 4px rgba(0, 0, 0, 0.3),     /* Inward shadow when pressed */
+        0px 0px 0px #4a5c48;
+}
     </style>
 </head>
 
@@ -561,6 +602,9 @@
             <p class="hero-subtitle">Thank you for joining us in the heart of Newark for an incredible weekend of
                 building.</p>
             <p class="hero-date">Jan 10, 2026 // Newark, CA</p>
+                    <a href="https://forms.gle/ed5CNq2c4YmDLF427" target="_blank" class="feedback-btn">
+             Feedback Form
+        </a>
         </div>
 
         <div class="slider-container reveal">
